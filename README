@@ -1,2 +1,6 @@
 This is the README documentation file.
+<<<<<<< HEAD
 Updated this second line for testing purposes.
+=======
+This should have been line 3.
+>>>>>>> multithreading
