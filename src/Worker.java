@@ -4,7 +4,7 @@ CSC 420: Graphical User Interfaces
 Fall 2012
 */
 
-package csc420.hw1;
+package csc420.hw1.bin;
 
 import javax.swing.SwingWorker;
 import java.io.File;
