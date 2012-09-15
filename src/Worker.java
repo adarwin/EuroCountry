@@ -10,6 +10,7 @@ import javax.swing.SwingWorker;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.concurrent.ExecutionException;
+import java.util.List;
 //import javax.swing.filechooser.FileFilter;
 
 public class Worker extends SwingWorker<File[], Integer>
@@ -52,6 +53,14 @@ public class Worker extends SwingWorker<File[], Integer>
       if (fileList != null)
       {
         EuroCountry.setCountryFiles(fileList);
+        final File[] temp = fileList;
+        javax.swing.SwingUtilities.invokeLater(new Runnable()
+        {
+          public void run()
+          {
+            EuroCountry.progressBar.setMaximum(temp.length);
+          }
+        });
 
         //countryFiles = new File[fileList.length];
         values = new Object[fileList.length];
@@ -63,6 +72,7 @@ public class Worker extends SwingWorker<File[], Integer>
           int extensionIndex = name.lastIndexOf('.');
           name = name.substring(0, extensionIndex);
           values[i] = name;
+          publish(i+1);
           final int tempInt = i;
           javax.swing.SwingUtilities.invokeLater(new Runnable()
           {
@@ -115,6 +125,22 @@ public class Worker extends SwingWorker<File[], Integer>
     catch (ExecutionException ex)
     {
       System.out.println(ex.getMessage());
+    }
+  }
+
+  @Override
+  protected void process(List<Integer> chunks)
+  {
+    for(Integer value : chunks)
+    {
+      final int temp = value;
+      javax.swing.SwingUtilities.invokeLater(new Runnable()
+      {
+        public void run()
+        {
+          EuroCountry.setProgress(temp);
+        }
+      });
     }
   }
 }

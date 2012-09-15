@@ -22,6 +22,7 @@ public class EuroCountry
   private static Listener actionListener = null;
   private static JLabel countryImageLabel;
   public static JList countries;
+  public static JProgressBar progressBar;
 
 
   public static boolean setCountryFiles(File[] files)
@@ -56,7 +57,6 @@ public class EuroCountry
       JFrame frame;
       JPanel leftPanel;
       JScrollPane scrollPane;
-      JProgressBar progressBar;
       SpringLayout leftPanelLayout;
       Container contentPane;
       JPanel rightPanel;
@@ -73,7 +73,7 @@ public class EuroCountry
       countries = new JList();
       countryImageLabel = new JLabel();
       scrollPane = new JScrollPane();
-      progressBar = new JProgressBar(0, 1);
+      progressBar = new JProgressBar(0, 100);
       leftPanelLayout = new SpringLayout();
       rightPanelLayout = new BorderLayout();
       contentLayout = new SpringLayout();
@@ -189,6 +189,12 @@ public class EuroCountry
   {
     Icon countryImageIcon = new ImageIcon(countryFiles[index].getAbsolutePath());
     countryImageLabel.setIcon(countryImageIcon);
+  }
+
+  public static void setProgress(int value)
+  {
+    System.out.println("Set progressBar to " + value);
+    progressBar.setValue(value);
   }
 
   public static void main (String[] args)
