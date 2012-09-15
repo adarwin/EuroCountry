@@ -8,7 +8,8 @@ package csc420.hw1;
 
 import javax.swing.SwingWorker;
 import java.io.File;
-import javax.swing.filechooser.FileFilter;
+import java.io.FileFilter;
+//import javax.swing.filechooser.FileFilter;
 
 public class Worker extends SwingWorker<File[], Integer>
 {
