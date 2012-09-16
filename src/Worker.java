@@ -66,7 +66,7 @@ public class Worker extends SwingWorker<File[], Integer>
         values = new Object[fileList.length];
         for (int i = 0; i < fileList.length; i++)
         {
-          Thread.sleep(50);
+          if (EuroCountry.slowEffect) Thread.sleep(50);
           //countryFiles[i] = fileList[i];
           String name = fileList[i].getName();
           int extensionIndex = name.lastIndexOf('.');

@@ -31,6 +31,7 @@ public class EuroCountry
   public static JProgressBar progressBar;
   private static DrawingPanel rightPanel;
   private static JFrame frame;
+  public static boolean slowEffect = true;
 
 
   public static boolean setCountryFiles(File[] files)
@@ -126,18 +127,22 @@ public class EuroCountry
       contentPane.add(rightPanel);
       contentPane.add(progressBar);
 
+    if (slowEffect)
+    {
+      String message = "This application is set to pause for 50 milliseconds each time\n";
+      message += "it loads an image. Would you like to keep this feature enabled?";
+      int result = JOptionPane.showConfirmDialog(frame, message, "Advisory", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+      System.out.println(result);
+      if (result == 1) //Indicates user selected 'No'
+      {
+        slowEffect = false;
+      }
+    }
 
     //Make JFrame ready for visibility
-      frame.setSize(800, 600);
+      frame.setSize(800, 400);
       frame.setLocationRelativeTo(null); //Center the frame on the screen
       frame.setVisible(true);
-      try
-      {
-        //Thread.sleep(1000);
-      }
-      catch (Exception ex)
-      {
-      }
 
     
 
@@ -146,7 +151,6 @@ public class EuroCountry
     try
     {
       System.out.println("Starting to load images");
-      Thread.sleep(1000);
     }
     catch (Exception ex)
     {
@@ -216,7 +220,14 @@ public class EuroCountry
     System.out.println("Set progressBar to " + value);
     progressBar.setValue(value);
     double percentComplete = (progressBar.getPercentComplete()) * 100;
-    progressBar.setString((int)percentComplete + "% Complete");
+    if (percentComplete >= 100)
+    {
+      progressBar.setString("Complete");
+    }
+    else
+    {
+      progressBar.setString("Loading images... " + (int)percentComplete + "%");
+    }
   }
 
   public static void main (String[] args)
