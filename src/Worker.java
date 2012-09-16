@@ -79,7 +79,7 @@ public class Worker extends SwingWorker<File[], Integer>
             public void run()
             {
               EuroCountry.countries.setListData(values);
-              EuroCountry.countries.setSelectedIndex(tempInt);
+              //EuroCountry.countries.setSelectedIndex(tempInt);
             }
           });
         }
@@ -107,7 +107,7 @@ public class Worker extends SwingWorker<File[], Integer>
       {
         public void run()
         {
-          EuroCountry.updateCountryImage(0);
+          EuroCountry.countries.setSelectedIndex(0);
         }
       });
       javax.swing.SwingUtilities.invokeLater(new Runnable()

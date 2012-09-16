@@ -14,6 +14,12 @@ import java.io.*;
 import java.util.ArrayList;
 import javax.swing.plaf.basic.*;
 import javax.swing.SwingWorker;
+import java.awt.Image;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.ColorModel;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 
 public class EuroCountry
 {
@@ -23,6 +29,8 @@ public class EuroCountry
   private static JLabel countryImageLabel;
   public static JList countries;
   public static JProgressBar progressBar;
+  private static DrawingPanel rightPanel;
+  private static JFrame frame;
 
 
   public static boolean setCountryFiles(File[] files)
@@ -54,12 +62,10 @@ public class EuroCountry
       ListSelectionModel listSelectionModel;
       int panelOutsideMargin;
       int panelInsideMargin;
-      JFrame frame;
       JPanel leftPanel;
       JScrollPane scrollPane;
       SpringLayout leftPanelLayout;
       Container contentPane;
-      JPanel rightPanel;
       BorderLayout rightPanelLayout;
       SpringLayout contentLayout;
 
@@ -69,7 +75,7 @@ public class EuroCountry
       panelInsideMargin = 10;
       frame = new JFrame("Euro Country");
       leftPanel = new JPanel();
-      rightPanel = new JPanel();
+      rightPanel = new DrawingPanel();
       countries = new JList();
       countryImageLabel = new JLabel();
       scrollPane = new JScrollPane();
@@ -162,6 +168,8 @@ public class EuroCountry
       //Left JPanel Modifications
       //Right JPanel Modifications
       //JLabel Modifications
+      //JProgressBar Modifications
+        progressBar.setStringPainted(true);
 
       //JList Modifications
         countries.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -187,14 +195,28 @@ public class EuroCountry
 
   public static void updateCountryImage(int index)
   {
+    File imageFile = countryFiles[index];
+    try
+    {
+      rightPanel.setImage(ImageIO.read(imageFile));
+      frame.repaint();
+    }
+    catch (IOException ex)
+    {
+      System.out.println(ex.getMessage());
+    }
+    /*
     Icon countryImageIcon = new ImageIcon(countryFiles[index].getAbsolutePath());
     countryImageLabel.setIcon(countryImageIcon);
+    */
   }
 
   public static void setProgress(int value)
   {
     System.out.println("Set progressBar to " + value);
     progressBar.setValue(value);
+    double percentComplete = (progressBar.getPercentComplete()) * 100;
+    progressBar.setString((int)percentComplete + "% Complete");
   }
 
   public static void main (String[] args)
