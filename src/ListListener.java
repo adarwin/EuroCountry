@@ -28,6 +28,5 @@ public class ListListener implements ListSelectionListener
         }
       });
     }
-    System.out.println(list.getSelectedIndex());
   }
 }

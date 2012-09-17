@@ -24,8 +24,6 @@ public class DrawingPanel extends JPanel
     img = image;
     originalHeight = img.getHeight();
     originalWidth = img.getWidth();
-    System.out.println("Set originalHeight to " + originalHeight);
-    System.out.println("Set originalWidth to " + originalWidth);
   }
 
   @Override
@@ -41,6 +39,8 @@ public class DrawingPanel extends JPanel
       int y = margin + titleOffset;
       int width;
       int height;
+
+      //Figure out how to place and size the image
       int imageWidth = originalWidth;
       int imageHeight = originalHeight;
       int panelWidth = this.getWidth();
@@ -48,9 +48,6 @@ public class DrawingPanel extends JPanel
       Integer tempWidth = new Integer(imageWidth);
       Integer tempHeight = new Integer(imageHeight);
       double imageAspectRatio = (tempWidth.doubleValue())/(tempHeight.doubleValue());
-      System.out.println("originalHeight = " + originalHeight);
-      System.out.println("originalWidth = " + originalWidth);
-      System.out.println("imageAspectRatio = " + imageAspectRatio);
       tempWidth = new Integer(panelWidth);
       tempHeight = new Integer(panelHeight);
       double panelAspectRatio = (tempWidth.doubleValue())/(tempHeight.doubleValue());
@@ -71,12 +68,6 @@ public class DrawingPanel extends JPanel
         int centerX = panelWidth/2;
         x = x+(centerX-(width/2));
       }
-      System.out.println("Attempting to draw image");
-      System.out.println("Panel Height = " + this.getHeight());
-      System.out.println("Panel Width = " + this.getWidth());
-      System.out.println("panelAspectRatio = " + panelAspectRatio);
-      System.out.println("New Height = " + height);
-      System.out.println("New Width = " + width);
       g2D.drawImage(img, x, y, width-2*margin, height-2*margin, this.getBackground(), null);
     }
   }

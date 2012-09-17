@@ -26,14 +26,14 @@ public class EuroCountry
 {
 
   private static File[] countryFiles = null;
-  private static Listener actionListener = null;
-  //private static JLabel countryImageLabel;
   public static JList countries;
   public static JProgressBar progressBar;
   private static DrawingPanel rightPanel;
   private static JFrame frame;
   public static boolean slowEffect = true;
   public static boolean countrySelected = false;
+
+
 
 
   public static boolean setCountryFiles(File[] files)
@@ -48,11 +48,19 @@ public class EuroCountry
       return false;
     }
   }
+
+
+
+
   private static void populate(JList list) throws Exception
   {
-    Worker worker = new Worker(countryFiles);
+    Worker worker = new Worker();
     worker.execute();
   }
+
+
+
+
 
   public static void createAndShowGUI()
   {
@@ -73,14 +81,12 @@ public class EuroCountry
       SpringLayout contentLayout;
 
     //Initialize all components
-      actionListener = new Listener();
       panelOutsideMargin = 10;
       panelInsideMargin = 10;
       frame = new JFrame("Euro Country");
       leftPanel = new JPanel();
       rightPanel = new DrawingPanel();
       countries = new JList();
-      //countryImageLabel = new JLabel();
       scrollPane = new JScrollPane();
       progressBar = new JProgressBar(0, 100);
       leftPanelLayout = new SpringLayout();
@@ -115,14 +121,11 @@ public class EuroCountry
           contentLayout.putConstraint(SpringLayout.EAST, progressBar, -1*panelOutsideMargin, SpringLayout.EAST, contentPane);
           contentLayout.putConstraint(SpringLayout.WEST, progressBar, panelOutsideMargin, SpringLayout.WEST, contentPane);
 
-      //Panel Layouts
-        //Left
-          leftPanelLayout.putConstraint(SpringLayout.NORTH, scrollPane, panelInsideMargin, SpringLayout.NORTH, leftPanel);
-          leftPanelLayout.putConstraint(SpringLayout.SOUTH, scrollPane, -1*panelInsideMargin, SpringLayout.SOUTH, leftPanel);
-          leftPanelLayout.putConstraint(SpringLayout.EAST, scrollPane, -1*panelInsideMargin, SpringLayout.EAST, leftPanel);
-          leftPanelLayout.putConstraint(SpringLayout.WEST, scrollPane, panelInsideMargin, SpringLayout.WEST, leftPanel);
-        //Right
-          //None just yet
+      //Left Panel Layout
+        leftPanelLayout.putConstraint(SpringLayout.NORTH, scrollPane, panelInsideMargin, SpringLayout.NORTH, leftPanel);
+        leftPanelLayout.putConstraint(SpringLayout.SOUTH, scrollPane, -1*panelInsideMargin, SpringLayout.SOUTH, leftPanel);
+        leftPanelLayout.putConstraint(SpringLayout.EAST, scrollPane, -1*panelInsideMargin, SpringLayout.EAST, leftPanel);
+        leftPanelLayout.putConstraint(SpringLayout.WEST, scrollPane, panelInsideMargin, SpringLayout.WEST, leftPanel);
 
     //Add components to JFrame
       contentPane.add(leftPanel);
@@ -135,7 +138,6 @@ public class EuroCountry
         String message = "This application is set to pause for 50 milliseconds each time\n";
         message += "it loads an image. Would you like to keep this feature enabled?";
         int result = JOptionPane.showConfirmDialog(frame, message, "Advisory", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-        System.out.println(result);
         if (result == 1) //Indicates user selected 'No'
         {
           slowEffect = false;
@@ -147,18 +149,9 @@ public class EuroCountry
       frame.setLocationRelativeTo(null); //Center the frame on the screen
       frame.setMinimumSize(new Dimension(440, 142));
       frame.setVisible(true);
-
     
 
-
     //Start loading images
-    try
-    {
-      System.out.println("Starting to load images");
-    }
-    catch (Exception ex)
-    {
-    }
       try
       {
         populate(countries);
@@ -173,9 +166,6 @@ public class EuroCountry
       //JFrame Modifications
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-      //Left JPanel Modifications
-      //Right JPanel Modifications
-      //JLabel Modifications
       //JProgressBar Modifications
         progressBar.setStringPainted(true);
 
@@ -183,16 +173,11 @@ public class EuroCountry
         countries.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         countries.addListSelectionListener(new ListListener());
         scrollPane.getViewport().setView(countries);
-
-
-
-
-    //rightPanel.add(countryImageLabel, BorderLayout.CENTER);
-
-
-
-    frame.setVisible(true);
   }
+
+
+
+
 
   public static void updateCountryImage(String name)
   {
@@ -213,12 +198,15 @@ public class EuroCountry
     catch (IOException ex)
     {
       System.out.println(ex.getMessage());
+      System.out.println(ex.getStackTrace());
     }
   }
 
+
+
+
   public static void setProgress(int value)
   {
-    System.out.println("Set progressBar to " + value);
     progressBar.setValue(value);
     double percentComplete = (progressBar.getPercentComplete()) * 100;
     if (percentComplete >= 100)
@@ -230,6 +218,9 @@ public class EuroCountry
       progressBar.setString("Loading images... " + (int)percentComplete + "%");
     }
   }
+
+
+
 
   public static void main (String[] args)
   {
