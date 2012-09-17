@@ -1,6 +1,4 @@
-This is the README documentation file.
-<<<<<<< HEAD
-Updated this second line for testing purposes.
-=======
-This should have been line 3.
->>>>>>> multithreading
+This java application was written for my Graphical User Interfaces class at SUNY Oswego.
+It provides the user with a list of all the European countries. The user can then select
+one of those countries to see that country's flag appear on the right side of the
+window.
