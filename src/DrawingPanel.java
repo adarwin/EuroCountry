@@ -4,7 +4,7 @@ CSC 420: Graphical User Interfaces
 Fall 2012
 */
 
-package csc420.hw1.bin;
+//package csc420.hw1.bin;
 
 import javax.swing.JPanel;
 import java.awt.Graphics;

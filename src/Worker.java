@@ -4,7 +4,7 @@ CSC 420: Graphical User Interfaces
 Fall 2012
 */
 
-package csc420.hw1.bin;
+//package csc420.hw1.bin;
 
 import javax.swing.SwingWorker;
 import java.io.File;
@@ -22,7 +22,8 @@ public class Worker extends SwingWorker<File[], Integer>
   protected File[] doInBackground() throws Exception
   {
     //Load images
-    String path = "csc420/hw1/img";
+    //String path = "csc420/hw1/img";
+    String path = "img";
     File directory = new File(path);
     File[] fileList = null;
 
