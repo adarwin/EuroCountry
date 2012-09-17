@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 
 public class DrawingPanel extends JPanel
 {
+  public static final long serialVersionUID = 0;
   private BufferedImage img;
   private int originalHeight;
   private int originalWidth;

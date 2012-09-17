@@ -16,13 +16,15 @@ public class ListListener implements ListSelectionListener
   {
     JList list = (JList)e.getSource();
     final int index = list.getSelectedIndex();
+    final String value = (String)(list.getSelectedValue());
     if (index >= 0)
     {
       javax.swing.SwingUtilities.invokeLater(new Runnable()
       {
         public void run()
         {
-          EuroCountry.updateCountryImage(index);
+          EuroCountry.countrySelected = true;
+          EuroCountry.updateCountryImage(value);
         }
       });
     }

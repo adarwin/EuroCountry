@@ -19,6 +19,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.ColorModel;
 import java.awt.image.BufferedImage;
+import java.awt.Dimension;
 import javax.imageio.ImageIO;
 
 public class EuroCountry
@@ -26,12 +27,13 @@ public class EuroCountry
 
   private static File[] countryFiles = null;
   private static Listener actionListener = null;
-  private static JLabel countryImageLabel;
+  //private static JLabel countryImageLabel;
   public static JList countries;
   public static JProgressBar progressBar;
   private static DrawingPanel rightPanel;
   private static JFrame frame;
   public static boolean slowEffect = true;
+  public static boolean countrySelected = false;
 
 
   public static boolean setCountryFiles(File[] files)
@@ -78,7 +80,7 @@ public class EuroCountry
       leftPanel = new JPanel();
       rightPanel = new DrawingPanel();
       countries = new JList();
-      countryImageLabel = new JLabel();
+      //countryImageLabel = new JLabel();
       scrollPane = new JScrollPane();
       progressBar = new JProgressBar(0, 100);
       leftPanelLayout = new SpringLayout();
@@ -86,13 +88,13 @@ public class EuroCountry
       contentLayout = new SpringLayout();
 
     //Prepare leftPanel for placing in JFrame
-      leftPanel.setBorder(new TitledBorder("Left Panel"));
+      leftPanel.setBorder(new TitledBorder("European Countries"));
       leftPanel.setLayout(leftPanelLayout);
       //Add the combo box to the left panel
         leftPanel.add(scrollPane);
     //Prepare rightPanel for placing in JFrame
       rightPanel.setLayout(rightPanelLayout);
-      rightPanel.setBorder(new TitledBorder("Right Panel"));
+      rightPanel.setBorder(new TitledBorder("European Country Flags"));
     
     //Configure Layouts
       contentPane = frame.getContentPane();
@@ -127,21 +129,23 @@ public class EuroCountry
       contentPane.add(rightPanel);
       contentPane.add(progressBar);
 
-    if (slowEffect)
-    {
-      String message = "This application is set to pause for 50 milliseconds each time\n";
-      message += "it loads an image. Would you like to keep this feature enabled?";
-      int result = JOptionPane.showConfirmDialog(frame, message, "Advisory", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-      System.out.println(result);
-      if (result == 1) //Indicates user selected 'No'
+    //Display slow loading effect bypass option dialog
+      if (slowEffect)
       {
-        slowEffect = false;
+        String message = "This application is set to pause for 50 milliseconds each time\n";
+        message += "it loads an image. Would you like to keep this feature enabled?";
+        int result = JOptionPane.showConfirmDialog(frame, message, "Advisory", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        System.out.println(result);
+        if (result == 1) //Indicates user selected 'No'
+        {
+          slowEffect = false;
+        }
       }
-    }
 
     //Make JFrame ready for visibility
       frame.setSize(800, 400);
       frame.setLocationRelativeTo(null); //Center the frame on the screen
+      frame.setMinimumSize(new Dimension(440, 142));
       frame.setVisible(true);
 
     
@@ -183,23 +187,24 @@ public class EuroCountry
 
 
 
-
-    /*
-    rightPanelLayout.putConstraint(SpringLayout.NORTH, countryImageLabel, panelInsideMargin, SpringLayout.NORTH, rightPanel);
-    rightPanelLayout.putConstraint(SpringLayout.SOUTH, countryImageLabel, -1*panelInsideMargin, SpringLayout.SOUTH, rightPanel);
-    rightPanelLayout.putConstraint(SpringLayout.EAST, countryImageLabel, -1*panelInsideMargin, SpringLayout.EAST, rightPanel);
-    rightPanelLayout.putConstraint(SpringLayout.WEST, countryImageLabel, panelInsideMargin, SpringLayout.WEST, rightPanel);
-    */
-    rightPanel.add(countryImageLabel, BorderLayout.CENTER);
+    //rightPanel.add(countryImageLabel, BorderLayout.CENTER);
 
 
 
     frame.setVisible(true);
   }
 
-  public static void updateCountryImage(int index)
+  public static void updateCountryImage(String name)
   {
-    File imageFile = countryFiles[index];
+    File imageFile = null;
+    for (File f : countryFiles)
+    {
+      if (f.getName().contains(name))
+      {
+        imageFile = f;
+        break;
+      }
+    }
     try
     {
       rightPanel.setImage(ImageIO.read(imageFile));
@@ -209,10 +214,6 @@ public class EuroCountry
     {
       System.out.println(ex.getMessage());
     }
-    /*
-    Icon countryImageIcon = new ImageIcon(countryFiles[index].getAbsolutePath());
-    countryImageLabel.setIcon(countryImageIcon);
-    */
   }
 
   public static void setProgress(int value)

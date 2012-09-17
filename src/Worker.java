@@ -11,17 +11,54 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.concurrent.ExecutionException;
 import java.util.List;
+import java.util.TreeSet;
 //import javax.swing.filechooser.FileFilter;
 
 public class Worker extends SwingWorker<File[], Integer>
 {
   File[] countryFiles;
   Object[] values;
+  TreeSet<String> nameSet;;
   public Worker(File[] fileList)
   {
     super();
     countryFiles = fileList;
   }
+  /*
+  private void insertCountryName(String name)
+  {
+    //Assumes countryNames is already sorted
+    for (int i = 0; i < countryNames.length; i++)
+    {
+      if (countryNames[i] == null)
+      {
+        countryNames[i] = name;
+        break;
+      }
+      else
+      {
+        if (name.compareTo(countryNames[i]) < 0)
+        {
+          insertCountryName(name, i);
+          break;
+        }
+      }
+    }
+  }
+  private void insertCountryName(String name, int index)
+  {
+    String temp;
+    temp = countryNames[index];
+    countryNames[index] = name;
+    for (int i = index; i < countryNames.length; i++)
+    {
+      temp = countryNames[i];
+      countryNames[i] = name;
+    }
+  }
+  */
+
+
   @Override
   protected File[] doInBackground() throws Exception
   {
@@ -64,6 +101,7 @@ public class Worker extends SwingWorker<File[], Integer>
 
         //countryFiles = new File[fileList.length];
         values = new Object[fileList.length];
+        nameSet = new TreeSet<String>();
         for (int i = 0; i < fileList.length; i++)
         {
           if (EuroCountry.slowEffect) Thread.sleep(50);
@@ -71,14 +109,17 @@ public class Worker extends SwingWorker<File[], Integer>
           String name = fileList[i].getName();
           int extensionIndex = name.lastIndexOf('.');
           name = name.substring(0, extensionIndex);
-          values[i] = name;
+          //values[i] = name;
+          nameSet.add(name);
+          //insertCountryName(name);
           publish(i+1);
           final int tempInt = i;
+          final Object[] output = nameSet.toArray();
           javax.swing.SwingUtilities.invokeLater(new Runnable()
           {
             public void run()
             {
-              EuroCountry.countries.setListData(values);
+              EuroCountry.countries.setListData(output);
               //EuroCountry.countries.setSelectedIndex(tempInt);
             }
           });
@@ -107,7 +148,10 @@ public class Worker extends SwingWorker<File[], Integer>
       {
         public void run()
         {
-          EuroCountry.countries.setSelectedIndex(0);
+          if (!EuroCountry.countrySelected)
+          {
+            EuroCountry.countries.setSelectedIndex(0);
+          }
         }
       });
       javax.swing.SwingUtilities.invokeLater(new Runnable()
